@@ -1,4 +1,4 @@
-import 'villages_model.dart';
+import '../../../villages/villages_model.dart';
 
 class DataTpsKorcab {
   int? id;

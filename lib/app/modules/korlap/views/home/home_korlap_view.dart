@@ -1,3 +1,4 @@
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -49,23 +50,32 @@ class HomeKorlapView extends GetView<HomeKorlapController> {
         ),
         centerTitle: false,
         actions: [
-          GestureDetector(
-            onTap: () => controller.korlapC
-                .setCurentIndex(ConstantsKorlapDestination.profile),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: CachedNetworkImage(
-                imageUrl: '',
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
+          FutureBuilder(
+            future: controller.fetchProfile(),
+            builder: (context, snapshot) {
+              var imageUrl = '';
+              if (snapshot.hasData && snapshot.data != null) {
+                imageUrl = snapshot.data?.profile?.gambarProfile ?? '-';
+              }
+
+              return GestureDetector(
+                onTap: () => controller.korlapC
+                    .setCurentIndex(ConstantsKorlapDestination.profile),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: CachedNetworkImage(
+                    imageUrl: '${ConstantsEndpoint.imgProfile}$imageUrl',
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundImage: imageProvider,
+                    ),
+                    errorWidget: (context, url, error) => const CircleAvatar(
+                      backgroundImage:
+                          AssetImage('assets/img/placeholder_no_photo.png'),
+                    ),
+                  ),
                 ),
-                placeholder: (context, url) => const CircleAvatar(),
-                errorWidget: (context, url, error) => const CircleAvatar(
-                  backgroundImage:
-                      AssetImage('assets/img/placeholder_no_photo.png'),
-                ),
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(width: 8),
         ],
@@ -194,7 +204,7 @@ class HomeKorlapView extends GetView<HomeKorlapController> {
 
     return Scaffold(
       appBar: builderHeading(),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 32,

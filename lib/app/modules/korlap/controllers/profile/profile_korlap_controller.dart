@@ -5,7 +5,6 @@ import 'package:app_pemenangan_caleg/app/data/models/users/users_model.dart';
 import 'package:app_pemenangan_caleg/app/modules/init/controller/init_controller.dart';
 import 'package:app_pemenangan_caleg/app/services/profile/profile_services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../routes/app_pages.dart';
@@ -13,9 +12,8 @@ import '../../../../routes/app_pages.dart';
 class ProfileKorlapController extends GetxController {
   late final InitController _initC;
   late final ProfileServices _profileS;
-  final selectedImage = Rxn<XFile>();
 
-  UsersModel? usersModel;
+  final usersModel = Rxn<UsersModel>();
 
   final logger = Logger();
 
@@ -31,23 +29,23 @@ class ProfileKorlapController extends GetxController {
     }
 
     _profileS = ProfileServices();
+    fetchProfile();
   }
 
-  Future<UsersModel?> fetchProfile() async {
+  Future<void> fetchProfile() async {
     try {
       final response = await _profileS.fetchProfile();
       if (response.statusCode == HttpStatus.ok) {
         final data = ResponseUsersModel.fromJson(response.data);
         final result = data.result;
-        usersModel = result;
-        return result;
+        usersModel.value = result;
       }
     } catch (e) {
       logger.e('Error: $e');
     }
-
-    return null;
   }
+
+  void moveToDetail() => Get.toNamed(Routes.DETAIL_PROFILE);
 
   void logout() {
     _initC.deleteSession().then(

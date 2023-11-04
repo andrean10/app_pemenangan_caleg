@@ -1,3 +1,5 @@
+import 'package:app_pemenangan_caleg/app/data/models/users/role/role_model.dart';
+
 import 'profile_model.dart';
 
 class UsersModel {
@@ -7,6 +9,7 @@ class UsersModel {
   int? isAktif;
   int? isRegistps;
   ProfileModel? profile;
+  List<RoleModel>? roles;
 
   UsersModel({
     this.id,
@@ -15,11 +18,12 @@ class UsersModel {
     this.isAktif,
     this.isRegistps,
     this.profile,
+    this.roles,
   });
 
   @override
   String toString() {
-    return 'UsersModel(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, profile: $profile)';
+    return 'UsersModel(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, profile: $profile, roles: $roles)';
   }
 
   factory UsersModel.fromJson(Map<String, dynamic> json) => UsersModel(
@@ -31,6 +35,9 @@ class UsersModel {
         profile: json['profile'] == null
             ? null
             : ProfileModel.fromJson(json['profile'] as Map<String, dynamic>),
+        roles: (json['roles'] as List<dynamic>?)
+            ?.map((e) => RoleModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +47,7 @@ class UsersModel {
         'is_aktif': isAktif,
         'is_registps': isRegistps,
         'profile': profile?.toJson(),
+        'roles': roles?.map((e) => e.toJson()).toList(),
       };
 
   UsersModel copyWith({
@@ -49,6 +57,7 @@ class UsersModel {
     int? isAktif,
     int? isRegistps,
     ProfileModel? profile,
+    List<RoleModel>? roles,
   }) {
     return UsersModel(
       id: id ?? this.id,
@@ -57,6 +66,7 @@ class UsersModel {
       isAktif: isAktif ?? this.isAktif,
       isRegistps: isRegistps ?? this.isRegistps,
       profile: profile ?? this.profile,
+      roles: roles ?? this.roles,
     );
   }
 }

@@ -75,17 +75,12 @@ class PendukungServices extends MainServices {
     );
   }
 
-  Future<dio_r.Response> fetchHeaderPendukung(int tpsId) async {
+  Future<dio_r.Response> fetchHeaderTPS() async {
     if (token != null) {
       dio.options.headers['Authorization'] = 'Bearer $token';
     }
 
-    return await dio.get(
-      'dataPendukung/getHeaderTps',
-      queryParameters: {
-        'tps_id': tpsId,
-      },
-    );
+    return await dio.get('dataPendukung/getHeaderTps');
   }
 
   Future<dio_r.Response> addPendukung(Map<String, dynamic> model) async {

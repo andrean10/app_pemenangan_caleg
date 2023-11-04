@@ -9,18 +9,18 @@ class KorlapKcbView extends GetView<KorlapKcbController> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget builderFAB() {
-    //   return Obx(
-    //     () => AnimatedOpacity(
-    //       duration: 300.milliseconds,
-    //       opacity: controller.isScrolling.value ? 0 : 1,
-    //       child: FloatingActionButton(
-    //         onPressed: () {},
-    //         child: const Icon(Icons.add_rounded),
-    //       ),
-    //     ),
-    //   );
-    // }
+    Widget builderFAB() {
+      return Obx(
+        () => AnimatedOpacity(
+          duration: 300.milliseconds,
+          opacity: controller.isScrolling.value ? 0 : 1,
+          child: FloatingActionButton(
+            onPressed: controller.moveToManageKorlap,
+            child: const Icon(Icons.add_rounded),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -28,6 +28,7 @@ class KorlapKcbView extends GetView<KorlapKcbController> {
         centerTitle: true,
       ),
       body: const BuilderContentKorlapKcb(),
+      floatingActionButton: builderFAB(),
     );
   }
 }

@@ -15,6 +15,10 @@ abstract class Routes {
   static const DETAIL_PENDUKUNG_KLP = _Paths.DETAIL_PENDUKUNG_KLP;
   static const DATA_PENDUKUNG_KORLAP = _Paths.DATA_PENDUKUNG_KORLAP;
   static const DETAIL_PROFILE = _Paths.DETAIL_PROFILE;
+  static const MANAGE_KORLAP = _Paths.MANAGE_KORLAP;
+  static const MANAGE_PENDUKUNG_BY_KORLAP = _Paths.MANAGE_PENDUKUNG_BY_KORLAP;
+  static const MANAGE_PROFILE = _Paths.MANAGE_PROFILE;
+  static const SUARA_TPS_KCB = _Paths.SUARA_TPS_KCB;
 }
 
 abstract class _Paths {
@@ -31,4 +35,8 @@ abstract class _Paths {
   static const DETAIL_PENDUKUNG_KLP = '/detail-pendukung-klp';
   static const DATA_PENDUKUNG_KORLAP = '/data-pendukung-korlap';
   static const DETAIL_PROFILE = '/detail-profile';
+  static const MANAGE_KORLAP = '/manage-korlap';
+  static const MANAGE_PENDUKUNG_BY_KORLAP = '/manage-pendukung-by-korlap';
+  static const MANAGE_PROFILE = '/manage-profile';
+  static const SUARA_TPS_KCB = '/suara-tps-kcb';
 }

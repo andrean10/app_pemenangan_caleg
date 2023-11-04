@@ -1,5 +1,6 @@
 import 'package:app_pemenangan_caleg/app/data/models/korlap/pendukung/response/data_pendukung_korlap.dart';
 import 'package:app_pemenangan_caleg/app/modules/korlap/controllers/pendukung/pendukung_klp_controller.dart';
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_status_verification_tps.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,7 +27,7 @@ class BuilderContentPendukungKlp extends GetView<PendukungKlpController> {
           borderRadius: BorderRadius.circular(12),
           child: CachedNetworkImage(
             height: double.infinity,
-            imageUrl: '${item?.gambarProfile}',
+            imageUrl: '${ConstantsEndpoint.imgProfile}${item?.gambarProfile}',
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Image.asset(
               'assets/img/placeholder_no_photo.png',
@@ -212,59 +213,18 @@ class BuilderContentPendukungKlp extends GetView<PendukungKlpController> {
           itemBuilder: (context, item, index) {
             final profile = item.users?.profile;
 
-            return Dismissible(
-              key: Key(item.id.toString()),
-              background: Container(
-                color: Colors.green,
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 21),
-                child: const Icon(
-                  Icons.edit_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              secondaryBackground: Container(
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 21),
-                child: const Icon(
-                  Icons.delete_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              confirmDismiss: (direction) {
-                // if (direction == DismissDirection.endToStart) {
-                //   Get.defaultDialog(
-                //     title: 'Hapus Pendukung',
-                //     middleText: 'Apakah anda yakin ingin menghapus pendukung?',
-                //     textConfirm: 'Ya',
-                //     textCancel: 'Tidak',
-                //     onConfirm: () => controller.deletePendukung(item.id!),
-                //   );
-                // } else {
-                //   showCustomFullDialog(
-                //     context: context,
-                //     title: 'Pilih Pengganti Pendukung',
-                //     id: item.id!,
-                //   );
-                // }
-                return Future.value(false);
-              },
-              child: GestureDetector(
-                onTap: () => controller.moveToDetail(item),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: size.height * 0.2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      builderImage(profile),
-                      const SizedBox(width: 21),
-                      builderInfo(item),
-                    ],
-                  ),
+            return GestureDetector(
+              onTap: () => controller.moveToDetail(item),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                height: size.height * 0.2,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    builderImage(profile),
+                    const SizedBox(width: 21),
+                    builderInfo(item),
+                  ],
                 ),
               ),
             );

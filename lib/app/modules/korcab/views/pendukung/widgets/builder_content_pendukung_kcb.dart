@@ -1,5 +1,6 @@
 import 'package:app_pemenangan_caleg/app/data/models/pendukung/response/data_pendukung.dart';
 import 'package:app_pemenangan_caleg/app/modules/korcab/controllers/pendukung/pendukung_kcb_controller.dart';
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_status_verification_tps.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,23 +19,6 @@ class BuilderContentPendukungKcb extends GetView<PendukungKcbController> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-    // Future<Widget> showCustomFullDialog({
-    //   required BuildContext context,
-    //   required String title,
-    //   required int id,
-    // }) async {
-    //   return await showDialog(
-    //     context: context,
-    //     builder: (context) => CustomDialogFullscreenPendukung(
-    //       title: title,
-    //       isEdit: true,
-    //       id: id,
-    //     ),
-    //   ).whenComplete(
-    //     () => controller.clearDataSelected(),
-    //   );
-    // }
-
     Widget builderImage(DataPendukung item) {
       return Expanded(
         flex: 2,
@@ -42,7 +26,7 @@ class BuilderContentPendukungKcb extends GetView<PendukungKcbController> {
           borderRadius: BorderRadius.circular(12),
           child: CachedNetworkImage(
             height: double.infinity,
-            imageUrl: '${item.gambarProfile}',
+            imageUrl: '${ConstantsEndpoint.imgProfile}${item.gambarProfile}',
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Image.asset(
               'assets/img/placeholder_no_photo.png',

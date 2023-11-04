@@ -14,7 +14,7 @@ class BuilderAuthHead extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(
-            'assets/img/logo.png.webp',
+            'assets/img/logo.png',
             width: (orientation == Orientation.portrait)
                 ? size.width * 0.25
                 : size.height * 0.2,

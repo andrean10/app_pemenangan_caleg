@@ -21,7 +21,8 @@ class DetailPendukungKlpView extends GetView<DetailPendukungKlpController> {
     Widget builderImage() {
       return CachedNetworkImage(
         height: size.height * 0.4,
-        imageUrl: '${controller.args.users?.profile?.gambarProfile}',
+        imageUrl:
+            '${ConstantsEndpoint.imgProfile}${controller.args.users?.profile?.gambarProfile}',
         errorWidget: (context, url, error) => Image.asset(
           'assets/img/placeholder_no_photo.png',
           fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'package:app_pemenangan_caleg/app/data/models/users/result_users2_model/data_users2.dart';
 import 'package:app_pemenangan_caleg/app/modules/korcab/controllers/korlap/korlap_kcb_controller.dart';
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_status_verification_tps.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,23 +19,6 @@ class BuilderContentKorlapKcb extends GetView<KorlapKcbController> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
-    // Future<Widget> showCustomFullDialog({
-    //   required BuildContext context,
-    //   required String title,
-    //   required int id,
-    // }) async {
-    //   return await showDialog(
-    //     context: context,
-    //     builder: (context) => CustomDialogFullscreenPendukung(
-    //       title: title,
-    //       isEdit: true,
-    //       id: id,
-    //     ),
-    //   ).whenComplete(
-    //     () => controller.clearDataSelected(),
-    //   );
-    // }
-
     Widget builderImage(DataUsers2 item) {
       return Expanded(
         flex: 2,
@@ -42,7 +26,7 @@ class BuilderContentKorlapKcb extends GetView<KorlapKcbController> {
           borderRadius: BorderRadius.circular(12),
           child: CachedNetworkImage(
             height: double.infinity,
-            imageUrl: '${item.gambarProfile}',
+            imageUrl: '${ConstantsEndpoint.imgProfile}${item.gambarProfile}',
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Image.asset(
               'assets/img/placeholder_no_photo.png',
@@ -65,7 +49,7 @@ class BuilderContentKorlapKcb extends GetView<KorlapKcbController> {
         _ => Colors.purple,
       };
       final verifStatus = switch (item.isAktif) {
-        ConstantsStatusVerificationTPS.verified => 'Verifikasi',
+        ConstantsStatusVerificationTPS.verified => 'Aktif',
         ConstantsStatusVerificationTPS.rejected => 'Ditolak',
         _ => 'Menunggu Verifikasi',
       };
@@ -107,25 +91,25 @@ class BuilderContentKorlapKcb extends GetView<KorlapKcbController> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  size: 14,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(width: 2),
-                Expanded(
-                  child: Text(
-                    '${item.alamatProfile}',
-                    style: theme.textTheme.bodySmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
+            // const SizedBox(height: 8),
+            // Row(
+            //   children: [
+            //     Icon(
+            //       Icons.location_on_rounded,
+            //       size: 14,
+            //       color: theme.colorScheme.primary,
+            //     ),
+            //     const SizedBox(width: 2),
+            //     Expanded(
+            //       child: Text(
+            //         '${item.alamatProfile}',
+            //         style: theme.textTheme.bodySmall,
+            //         maxLines: 2,
+            //         overflow: TextOverflow.ellipsis,
+            //       ),
+            //     ),
+            //   ],
+            // ),
             const Spacer(),
             Container(
               padding: const EdgeInsets.symmetric(
@@ -183,60 +167,18 @@ class BuilderContentKorlapKcb extends GetView<KorlapKcbController> {
               InfiniteScroll.builderNoItemsFound(),
           animateTransitions: true,
           itemBuilder: (context, item, index) {
-            return Dismissible(
-              key: Key(item.id.toString()),
-              background: Container(
-                color: Colors.green,
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 21),
-                child: const Icon(
-                  Icons.edit_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              secondaryBackground: Container(
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 21),
-                child: const Icon(
-                  Icons.delete_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              confirmDismiss: (direction) {
-                // if (direction == DismissDirection.endToStart) {
-                //   Get.defaultDialog(
-                //     title: 'Hapus Pendukung',
-                //     middleText: 'Apakah anda yakin ingin menghapus pendukung?',
-                //     textConfirm: 'Ya',
-                //     textCancel: 'Tidak',
-                //     onConfirm: () => controller.deletePendukung(item.id!),
-                //   );
-                // } else {
-                //   showCustomFullDialog(
-                //     context: context,
-                //     title: 'Pilih Pengganti Pendukung',
-                //     id: item.id!,
-                //   );
-                // }
-                return Future.value(false);
-              },
-              child: GestureDetector(
-                // onTap: () => controller.moveToDetail(item),
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: size.height * 0.2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      builderImage(item),
-                      const SizedBox(width: 21),
-                      builderInfo(item),
-                    ],
-                  ),
+            return GestureDetector(
+              onTap: () => controller.moveToManageKorlap(users: item),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                height: size.height * 0.2,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    builderImage(item),
+                    const SizedBox(width: 21),
+                    builderInfo(item),
+                  ],
                 ),
               ),
             );

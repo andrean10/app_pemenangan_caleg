@@ -10,7 +10,8 @@ class VillagesHeaderModel {
     return 'VillagesHeaderModel(id: $id, districtId: $districtId, name: $name)';
   }
 
-  factory VillagesHeaderModel.fromJson(Map<String, dynamic> json) => VillagesHeaderModel(
+  factory VillagesHeaderModel.fromJson(Map<String, dynamic> json) =>
+      VillagesHeaderModel(
         id: json['id'] as int?,
         districtId: json['district_id'] as int?,
         name: json['name'] as String?,

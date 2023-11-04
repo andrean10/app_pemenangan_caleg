@@ -7,6 +7,13 @@ import 'widgets/builder_content_pendukung_klp.dart';
 class PendukungKlpView extends GetView<PendukungKlpController> {
   const PendukungKlpView({super.key});
 
+  Widget builderFAB() {
+    return FloatingActionButton(
+      onPressed: controller.manageKorlap,
+      child: const Icon(Icons.add_rounded),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,6 +22,7 @@ class PendukungKlpView extends GetView<PendukungKlpController> {
         centerTitle: true,
       ),
       body: const BuilderContentPendukungKlp(),
+      floatingActionButton: builderFAB(),
     );
   }
 }

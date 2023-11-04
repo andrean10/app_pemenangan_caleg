@@ -1,5 +1,6 @@
 import 'package:app_pemenangan_caleg/app/data/models/korlap/pendukung/response/data_pendukung_korlap.dart';
 import 'package:app_pemenangan_caleg/app/modules/korlap/controllers/pendukung/pendukung_klp_controller.dart';
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_status_verification_tps.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,7 +27,7 @@ class BuilderContentDataPendukungKlp extends GetView<PendukungKlpController> {
           borderRadius: BorderRadius.circular(12),
           child: CachedNetworkImage(
             height: double.infinity,
-            imageUrl: '${item?.gambarProfile}',
+            imageUrl: '${ConstantsEndpoint.imgProfile}${item?.gambarProfile}',
             fit: BoxFit.cover,
             errorWidget: (context, url, error) => Image.asset(
               'assets/img/placeholder_no_photo.png',

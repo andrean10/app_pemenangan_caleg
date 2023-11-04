@@ -104,8 +104,6 @@ class ManageDataTpsKorcabController extends GetxController {
 
   Future<void> _initData() async {
     if (args != null) {
-      title = 'Edit Form TPS';
-
       tpsNameC.text = args!.namaTps.toString();
       tpsSupportC.text = args!.pendukungTps.toString();
       tpsMinCoC.text = args!.minimalTps.toString();
@@ -130,8 +128,6 @@ class ManageDataTpsKorcabController extends GetxController {
       } finally {
         Get.back();
       }
-    } else {
-      title = 'Tambah Form TPS';
     }
   }
 

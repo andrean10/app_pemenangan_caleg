@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../controllers/home/home_korcab_controller.dart';
 import '../controllers/korlap/korlap_kcb_controller.dart';
-import '../controllers/profile/profile_controller.dart';
+import '../controllers/profile/profile_korcab_controller.dart';
 import '../controllers/korcab_controller.dart';
 
 class KorcabBinding extends Bindings {
@@ -14,6 +14,6 @@ class KorcabBinding extends Bindings {
     Get.lazyPut<HomeKorcabController>(() => HomeKorcabController());
     Get.lazyPut<PendukungKcbController>(() => PendukungKcbController());
     Get.lazyPut<KorlapKcbController>(() => KorlapKcbController());
-    Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<ProfileKorcabController>(() => ProfileKorcabController());
   }
 }

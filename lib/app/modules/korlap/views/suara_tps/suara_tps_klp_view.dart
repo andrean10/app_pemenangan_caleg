@@ -1,4 +1,4 @@
-import 'package:app_pemenangan_caleg/app/data/models/korlap/header/response/header_pendukung_model.dart';
+import 'package:app_pemenangan_caleg/app/data/models/korlap/dashboard/response/result_dashboard_suara_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -16,17 +16,19 @@ class SuaraTPS {
 }
 
 List<PieSeries<SuaraTPS, String>> _getDefaultPieSeries(
-    HeaderPendukungModel data) {
+    ResultDashboardSuaraModel? result) {
+  final tps = result?.koordinatorTps?.tps;
+
   return <PieSeries<SuaraTPS, String>>[
     PieSeries<SuaraTPS, String>(
-      name: data.tps?.namaTps,
+      name: tps?.namaTps ?? 'TPS -',
       enableTooltip: true,
       explode: true,
       explodeIndex: 0,
       explodeOffset: '10%',
       dataSource: <SuaraTPS>[
-        SuaraTPS('Laki-laki', data.tps?.totallkTps ?? 0),
-        SuaraTPS('Perempuan', data.tps?.totalprTps ?? 0),
+        SuaraTPS('Laki-laki', result?.totalDukunganLk ?? 0),
+        SuaraTPS('Perempuan', result?.totalDukunganPr ?? 0),
       ],
       xValueMapper: (SuaraTPS data, _) => data.gender,
       yValueMapper: (SuaraTPS data, _) => data.jumlah,
@@ -66,13 +68,89 @@ class SuaraTpsKlpView extends GetView<SuaraTpsKlpController> {
       );
     }
 
+    Widget builderPie(ResultDashboardSuaraModel? result) {
+      final tps = result?.koordinatorTps?.tps;
+
+      return SfCircularChart(
+        title: ChartTitle(text: '${tps?.namaTps}'),
+        series: _getDefaultPieSeries(result),
+        legend: const Legend(isVisible: true),
+        tooltipBehavior: TooltipBehavior(enable: true),
+      );
+    }
+
+    Widget builderInfo(ResultDashboardSuaraModel? result) {
+      final tps = result?.koordinatorTps?.tps;
+
+      return Container(
+        width: double.infinity,
+        color: theme.colorScheme.outline.withOpacity(0.1),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              builderItemHeader(
+                icons: Icons.location_on_outlined,
+                value: 'Kelurahan : ${tps?.villages?.name}',
+              ),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.home_outlined,
+                value: 'Alamat : ${tps?.alamatTps}',
+              ),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.people_alt_outlined,
+                value: 'Total Dukungan : ${result?.totalDukungan ?? '-'} Suara',
+              ),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.man_outlined,
+                value:
+                    'Dukungan Laki-laki : ${result?.totalDukunganLk ?? '-'} Suara',
+              ),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.woman_outlined,
+                value:
+                    'Dukungan Perempuan : ${result?.totalDukunganPr ?? '-'} Suara',
+              ),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.person_outline,
+                value:
+                    'Total Koordinator : ${result?.totalkoordinator ?? '-'} Orang',
+              ),
+              const SizedBox(height: 16),
+              LinearProgressIndicator(
+                value: result!.presentasePemenangan! / 100,
+                backgroundColor: theme.colorScheme.errorContainer,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  theme.colorScheme.primary,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                minHeight: 12,
+              ),
+              Text('${result.presentasePemenangan} %'),
+              const SizedBox(height: 8),
+              builderItemHeader(
+                icons: Icons.campaign_rounded,
+                value:
+                    'Target Pemenangan TPS : ${result.targetPemenangan ?? '-'} Suara',
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Suara TPS'),
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: controller.fetchHeaderPendukung(),
+        future: controller.fetchKorlapSuaraTps(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -92,7 +170,7 @@ class SuaraTpsKlpView extends GetView<SuaraTpsKlpController> {
                         const Text('Upss... sepertinya ada masalah!'),
                         const SizedBox(height: 21),
                         CustomFilledButton(
-                          onPressed: () => controller.fetchHeaderPendukung(),
+                          onPressed: () => controller.fetchKorlapSuaraTps(),
                           isFilledTonal: false,
                           child: const Text('Coba Lagi'),
                         )
@@ -103,64 +181,19 @@ class SuaraTpsKlpView extends GetView<SuaraTpsKlpController> {
               ),
             );
           } else if (snapshot.hasData && snapshot.data != null) {
-            final data = snapshot.data;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SfCircularChart(
-                  title: ChartTitle(text: '${snapshot.data?.tps?.namaTps}'),
-                  series: _getDefaultPieSeries(snapshot.data!),
-                  legend: const Legend(isVisible: true),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                ),
-                Container(
-                  width: double.infinity,
-                  color: theme.colorScheme.outline.withOpacity(0.1),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        builderItemHeader(
-                          icons: Icons.location_on_outlined,
-                          value: 'Kelurahan : ${data?.tps?.villages?.name}',
-                        ),
-                        const SizedBox(height: 8),
-                        builderItemHeader(
-                          icons: Icons.home_outlined,
-                          value: 'Alamat : ${data?.tps?.alamatTps}',
-                        ),
-                        const SizedBox(height: 8),
-                        builderItemHeader(
-                          icons: Icons.people_alt_outlined,
-                          value:
-                              'Total Dukungan : ${data?.tps?.totalsemuaTps ?? '-'} Suara',
-                        ),
-                        const SizedBox(height: 8),
-                        builderItemHeader(
-                          icons: Icons.man_outlined,
-                          value:
-                              'Dukungan Laki-laki : ${data?.tps?.totallkTps ?? '-'} Suara',
-                        ),
-                        const SizedBox(height: 8),
-                        builderItemHeader(
-                          icons: Icons.woman_outlined,
-                          value:
-                              'Dukungan Perempuan : ${data?.tps?.totalprTps ?? '-'} Suara',
-                        ),
-                        const SizedBox(height: 8),
-                        builderItemHeader(
-                          icons: Icons.person_outline,
-                          value:
-                              'Total Koordinator : ${data?.tps?.totalcoTps ?? '-'} Orang',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            final result = snapshot.data?.result;
+
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  builderPie(result),
+                  builderInfo(result),
+                ],
+              ),
             );
           } else {
-            return const Text('Data Kosong');
+            return const Center(child: Text('Data Kosong'));
           }
         },
       ),

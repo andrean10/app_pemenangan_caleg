@@ -1,7 +1,7 @@
-import 'package:app_pemenangan_caleg/app/modules/korcab/views/home/home_view.dart';
+import 'package:app_pemenangan_caleg/app/modules/korcab/views/home/home_korcab_view.dart';
 import 'package:app_pemenangan_caleg/app/modules/korcab/views/korlap/korlap_kcb_view.dart';
 import 'package:app_pemenangan_caleg/app/modules/korcab/views/pendukung/pendukung_kcb_view.dart';
-import 'package:app_pemenangan_caleg/app/modules/korcab/views/profile/profile_view.dart';
+import 'package:app_pemenangan_caleg/app/modules/korcab/views/profile/profile_korcab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,10 +42,10 @@ class KorcabView extends GetView<KorcabController> {
         () => IndexedStack(
           index: controller.currentIndex.value,
           children: const [
-            HomeView(),
+            HomeKorcabView(),
             PendukungKcbView(),
             KorlapKcbView(),
-            ProfileView(),
+            ProfileKorcabView(),
           ],
         ),
       ),

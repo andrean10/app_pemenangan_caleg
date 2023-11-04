@@ -1,29 +1,9 @@
 {
-  "tps": {
-    "id": 2,
-    "provinces_id": 11,
-    "regencies_id": 1101,
-    "districts_id": 1101010,
-    "villages_id": 1,
-    "nama_tps": "Tps 2",
-    "alamat_tps": "Alamat Tps 2",
-    "totallk_tps": 1,
-    "totalpr_tps": 1,
-    "totalsemua_tps": 2,
-    "totalco_tps": 4,
-    "minimal_tps": 5,
-    "kuota_tps": 5,
-    "pendukung_tps": 50,
-    "villages": {
-      "id": 1,
-      "district_id": 1101010,
-      "name": "LATIUNG"
+  "roles": [
+    {
+      "id": 2,
+      "nama_roles": "koordinator"
+      
     }
-  },
-  "status_pencapaian": 1,
-  "detail_status": {
-    "disetujui": 1,
-    "ditolak": 0,
-    "menunggu": 1
-  }
+  ]
 }

@@ -11,10 +11,12 @@ import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../../utils/constants_lottie.dart';
+import '../pendukung_klp_controller.dart';
 
 class DetailPendukungKlpController extends GetxController {
   late DataPendukungKorlap args;
   late PendukungServices _pendukungS;
+  late PendukungKlpController _pendukungKlpC;
   late ImagePicker _picker;
 
   final logger = Logger();
@@ -27,6 +29,11 @@ class DetailPendukungKlpController extends GetxController {
 
   void _init() {
     args = Get.arguments as DataPendukungKorlap;
+
+    if (Get.isRegistered<PendukungKlpController>()) {
+      _pendukungKlpC = Get.find<PendukungKlpController>();
+    }
+
     _pendukungS = PendukungServices();
     _picker = ImagePicker();
   }
@@ -65,6 +72,7 @@ class DetailPendukungKlpController extends GetxController {
             backgroundColor: Colors.green,
           );
           Get.back();
+          _pendukungKlpC.pagingC.refresh();
         } else {
           Get.back();
 
@@ -76,6 +84,8 @@ class DetailPendukungKlpController extends GetxController {
       }
     } on dio.DioException catch (e) {
       logger.e('Error: $e');
+      Get.back();
+
       showSnackBar(
         content: const Text('Gagal upload bukti lapangan'),
         backgroundColor: Colors.red,
@@ -116,11 +126,17 @@ class DetailPendukungKlpController extends GetxController {
             content: const Text('Berhasil upload bukti coblos'),
             backgroundColor: Colors.green,
           );
+          _pendukungKlpC.pagingC.refresh();
           Get.back();
         }
       }
     } on dio.DioException catch (e) {
       logger.e('Error: $e');
+      Get.back();
+      showSnackBar(
+        content: const Text('Berhasil upload bukti coblos'),
+        backgroundColor: Colors.green,
+      );
     }
   }
 }

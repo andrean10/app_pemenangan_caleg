@@ -31,16 +31,19 @@ class HomeKorlapController extends GetxController {
     fetchProfile();
   }
 
-  Future<void> fetchProfile() async {
+  Future<UsersModel?> fetchProfile() async {
     try {
       final response = await _profileS.fetchProfile();
       if (response.statusCode == HttpStatus.ok) {
         final data = ResponseUsersModel.fromJson(response.data);
         usersModel.value = data.result;
+        return data.result;
       }
     } catch (e) {
       logger.e('Error: $e');
     }
+
+    return null;
   }
 
   void moveToDataPendukung() => Get.toNamed(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_pemenangan_caleg/app/data/models/korlap/header/response/header_pendukung_model.dart';
 import 'package:app_pemenangan_caleg/app/data/models/korlap/pendukung/response/data_pendukung_korlap.dart';
 import 'package:app_pemenangan_caleg/app/data/models/korlap/pendukung/response/pendukung_korlap_model.dart';
 import 'package:dio/dio.dart';
@@ -13,7 +14,6 @@ import '../../../../routes/app_pages.dart';
 import '../../../../services/pendukung/pendukung_services.dart';
 
 class PendukungKlpController extends GetxController {
-  // late InitController _initC;
   late PendukungServices _pendukungS;
 
   final scrollC = ScrollController();
@@ -30,10 +30,6 @@ class PendukungKlpController extends GetxController {
   }
 
   void _init() {
-    // if (Get.isRegistered<InitController>()) {
-    //   _initC = Get.find<InitController>();
-    // }
-
     _pendukungS = PendukungServices();
 
     scrollC.addListener(listenScroll);
@@ -51,6 +47,18 @@ class PendukungKlpController extends GetxController {
     isScrolling.value =
         scrollC.position.userScrollDirection == ScrollDirection.forward ||
             scrollC.position.userScrollDirection == ScrollDirection.reverse;
+  }
+
+  Future<HeaderPendukungModel?> fetchHeaderTPS() async {
+    try {
+      final response = await _pendukungS.fetchHeaderTPS();
+      if (response.statusCode == HttpStatus.ok) {
+        return HeaderPendukungModel.fromJson(response.data);
+      }
+    } on DioException catch (e) {
+      logger.e('Error: ${e.message}');
+    }
+    return null;
   }
 
   Future<void> fetchPendukungByKorlap(int page) async {
@@ -79,4 +87,6 @@ class PendukungKlpController extends GetxController {
       arguments: item,
     );
   }
+
+  void manageKorlap() => Get.toNamed(Routes.MANAGE_PENDUKUNG_BY_KORLAP);
 }

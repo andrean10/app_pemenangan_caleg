@@ -1,14 +1,13 @@
 import 'dart:io';
 
+import 'package:app_pemenangan_caleg/app/data/models/korlap/dashboard/response/dashboard_suara_tps_korlap_model.dart';
+import 'package:app_pemenangan_caleg/app/services/dashboard/dashboard_services.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../data/models/korlap/header/response/header_pendukung_model.dart';
-import '../../../../services/pendukung/pendukung_services.dart';
-
 class SuaraTpsKlpController extends GetxController {
-  late PendukungServices _pendukungS;
+  late DashboardServices _dashboardS;
 
   final logger = Logger();
 
@@ -19,14 +18,14 @@ class SuaraTpsKlpController extends GetxController {
   }
 
   void _init() {
-    _pendukungS = PendukungServices();
+    _dashboardS = DashboardServices();
   }
 
-  Future<HeaderPendukungModel?> fetchHeaderPendukung() async {
+  Future<DashboardSuaraTpsKorlapModel?> fetchKorlapSuaraTps() async {
     try {
-      final response = await _pendukungS.fetchHeaderPendukung(2);
+      final response = await _dashboardS.fetchKorlapSuaraTps();
       if (response.statusCode == HttpStatus.ok) {
-        return HeaderPendukungModel.fromJson(response.data);
+        return DashboardSuaraTpsKorlapModel.fromJson(response.data);
       } else {
         return null;
       }

@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/login/login_view.dart';
-import '../modules/data_pendukung_korlap/bindings/data_pendukung_korlap_binding.dart';
 import '../modules/data_pendukung_korlap/views/data_pendukung_korlap_view.dart';
 import '../modules/detail_korlap/bindings/detail_korlap_binding.dart';
 import '../modules/detail_korlap/views/detail_korlap_view.dart';
@@ -18,10 +17,18 @@ import '../modules/korlap/bindings/detail_pendukung_klp_binding.dart';
 import '../modules/korlap/bindings/korlap_binding.dart';
 import '../modules/korlap/views/korlap_view.dart';
 import '../modules/korlap/views/pendukung/detail/detail_pendukung_klp_view.dart';
+import '../modules/manage_korlap/bindings/manage_korlap_binding.dart';
+import '../modules/manage_korlap/views/manage_korlap_view.dart';
+import '../modules/manage_pendukung_by_korlap/bindings/manage_pendukung_by_korlap_binding.dart';
+import '../modules/manage_pendukung_by_korlap/views/manage_pendukung_by_korlap_view.dart';
+import '../modules/manage_profile/bindings/manage_profile_binding.dart';
+import '../modules/manage_profile/views/manage_profile_view.dart';
 import '../modules/manage_tps_korcab/bindings/manage_tps_korcab_binding.dart';
 import '../modules/manage_tps_korcab/views/manage_tps_korcab_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/suara_tps_kcb/bindings/suara_tps_kcb_binding.dart';
+import '../modules/suara_tps_kcb/views/suara_tps_kcb_view.dart';
 
 part 'app_routes.dart';
 
@@ -86,12 +93,31 @@ class AppPages {
     GetPage(
       name: _Paths.DATA_PENDUKUNG_KORLAP,
       page: () => const DataPendukungKorlapView(),
-      binding: DataPendukungKorlapBinding(),
     ),
     GetPage(
       name: _Paths.DETAIL_PROFILE,
-      page: () => const DetailProfileView(),
+      page: () => const DetailProfileKorcabView(),
       binding: DetailProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.MANAGE_KORLAP,
+      page: () => const ManageKorlapView(),
+      binding: ManageKorlapBinding(),
+    ),
+    GetPage(
+      name: _Paths.MANAGE_PENDUKUNG_BY_KORLAP,
+      page: () => const ManagePendukungByKorlapView(),
+      binding: ManagePendukungByKorlapBinding(),
+    ),
+    GetPage(
+      name: _Paths.MANAGE_PROFILE,
+      page: () => const ManageProfileView(),
+      binding: ManageProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUARA_TPS_KCB,
+      page: () => const SuaraTpsKcbView(),
+      binding: SuaraTpsKcbBinding(),
     ),
   ];
 }

@@ -9,11 +9,10 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../routes/app_pages.dart';
 import '../../../../services/korlap/korlap_services.dart';
-import '../../../init/controller/init_controller.dart';
 
 class KorlapKcbController extends GetxController {
-  late InitController _initC;
   late KorlapServices _pendukungS;
 
   final scrollC = ScrollController();
@@ -30,10 +29,6 @@ class KorlapKcbController extends GetxController {
   }
 
   void _init() {
-    if (Get.isRegistered<InitController>()) {
-      _initC = Get.find<InitController>();
-    }
-
     _pendukungS = KorlapServices();
 
     scrollC.addListener(listenScroll);
@@ -71,4 +66,9 @@ class KorlapKcbController extends GetxController {
       pagingC.error = e;
     }
   }
+
+  void moveToManageKorlap({DataUsers2? users}) => Get.toNamed(
+        Routes.MANAGE_KORLAP,
+        arguments: users,
+      );
 }

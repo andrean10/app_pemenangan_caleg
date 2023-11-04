@@ -9,7 +9,9 @@ class DataUsers2 {
   String? emailProfile;
   String? nohpProfile;
   String? gambarProfile;
+  int? usersId;
   String? nikProfile;
+  int? jabatanId;
   String? alamatProfile;
   String? jenisKelaminProfile;
 
@@ -24,14 +26,16 @@ class DataUsers2 {
     this.emailProfile,
     this.nohpProfile,
     this.gambarProfile,
+    this.usersId,
     this.nikProfile,
+    this.jabatanId,
     this.alamatProfile,
     this.jenisKelaminProfile,
   });
 
   @override
   String toString() {
-    return 'DataUsers2(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, namaRoles: $namaRoles, namaProfile: $namaProfile, emailProfile: $emailProfile, nohpProfile: $nohpProfile, gambarProfile: $gambarProfile, nikProfile: $nikProfile, alamatProfile: $alamatProfile, jenisKelaminProfile: $jenisKelaminProfile)';
+    return 'DataUsers2(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, namaRoles: $namaRoles, namaProfile: $namaProfile, emailProfile: $emailProfile, nohpProfile: $nohpProfile, gambarProfile: $gambarProfile, usersId: $usersId, nikProfile: $nikProfile, jabatanId: $jabatanId, alamatProfile: $alamatProfile, jenisKelaminProfile: $jenisKelaminProfile)';
   }
 
   factory DataUsers2.fromJson(Map<String, dynamic> json) => DataUsers2(
@@ -45,7 +49,9 @@ class DataUsers2 {
         emailProfile: json['email_profile'] as String?,
         nohpProfile: json['nohp_profile'] as String?,
         gambarProfile: json['gambar_profile'] as String?,
+        usersId: json['users_id'] as int?,
         nikProfile: json['nik_profile'] as String?,
+        jabatanId: json['jabatan_id'] as int?,
         alamatProfile: json['alamat_profile'] as String?,
         jenisKelaminProfile: json['jenis_kelamin_profile'] as String?,
       );
@@ -61,7 +67,9 @@ class DataUsers2 {
         'email_profile': emailProfile,
         'nohp_profile': nohpProfile,
         'gambar_profile': gambarProfile,
+        'users_id': usersId,
         'nik_profile': nikProfile,
+        'jabatan_id': jabatanId,
         'alamat_profile': alamatProfile,
         'jenis_kelamin_profile': jenisKelaminProfile,
       };
@@ -77,7 +85,9 @@ class DataUsers2 {
     String? emailProfile,
     String? nohpProfile,
     String? gambarProfile,
+    int? usersId,
     String? nikProfile,
+    int? jabatanId,
     String? alamatProfile,
     String? jenisKelaminProfile,
   }) {
@@ -92,7 +102,9 @@ class DataUsers2 {
       emailProfile: emailProfile ?? this.emailProfile,
       nohpProfile: nohpProfile ?? this.nohpProfile,
       gambarProfile: gambarProfile ?? this.gambarProfile,
+      usersId: usersId ?? this.usersId,
       nikProfile: nikProfile ?? this.nikProfile,
+      jabatanId: jabatanId ?? this.jabatanId,
       alamatProfile: alamatProfile ?? this.alamatProfile,
       jenisKelaminProfile: jenisKelaminProfile ?? this.jenisKelaminProfile,
     );

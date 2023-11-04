@@ -1,3 +1,4 @@
+import 'package:app_pemenangan_caleg/app/utils/constants_endpoint.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_korcab_destination.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,8 +11,8 @@ import '../../../../shared/shared_method.dart';
 import '../../../../shared/shared_theme.dart';
 import '../../controllers/home/home_korcab_controller.dart';
 
-class HomeView extends GetView<HomeKorcabController> {
-  const HomeView({Key? key}) : super(key: key);
+class HomeKorcabView extends GetView<HomeKorcabController> {
+  const HomeKorcabView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,38 +34,57 @@ class HomeView extends GetView<HomeKorcabController> {
                 fontSize: 14,
               ),
             ),
-            const AutoSizeText(
-              'example',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            FutureBuilder(
+                future: controller.fetchProfile(),
+                builder: (context, snapshot) {
+                  var name = '-';
+
+                  if (snapshot.hasData && snapshot.data != null) {
+                    name = snapshot.data?.profile?.namaProfile ?? '-';
+                  }
+
+                  return AutoSizeText(
+                    name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  );
+                }),
             const SizedBox(height: 4),
           ],
         ),
         centerTitle: false,
         actions: [
-          GestureDetector(
-            onTap: () => controller.korcabC
-                .setCurentIndex(ConstantsKorcabDestination.profile),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: CachedNetworkImage(
-                imageUrl: '',
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
-                placeholder: (context, url) => const CircleAvatar(),
-                errorWidget: (context, url, error) => const CircleAvatar(
-                  backgroundImage:
-                      AssetImage('assets/img/placeholder_no_photo.png'),
-                ),
-              ),
-            ),
-          ),
+          FutureBuilder(
+              future: controller.fetchProfile(),
+              builder: (context, snapshot) {
+                var imageUrl = '';
+                if (snapshot.hasData && snapshot.data != null) {
+                  imageUrl = snapshot.data?.profile?.gambarProfile ?? '-';
+                }
+
+                return GestureDetector(
+                  onTap: () => controller.korcabC
+                      .setCurentIndex(ConstantsKorcabDestination.profile),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: CachedNetworkImage(
+                      imageUrl: '${ConstantsEndpoint.imgProfile}$imageUrl',
+                      imageBuilder: (context, imageProvider) => CircleAvatar(
+                        backgroundImage: imageProvider,
+                      ),
+                      placeholder: (context, url) => const CircleAvatar(),
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/img/placeholder_no_photo.png'),
+                      ),
+                    ),
+                  ),
+                );
+              }),
           const SizedBox(width: 8),
         ],
       );
@@ -184,13 +204,38 @@ class HomeView extends GetView<HomeKorcabController> {
               ],
             ),
           ),
+          GestureDetector(
+            onTap: controller.moveToSuaraTPS,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.pie_chart_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Suara TPS',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       );
     }
 
     return Scaffold(
       appBar: builderHeading(),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 32,

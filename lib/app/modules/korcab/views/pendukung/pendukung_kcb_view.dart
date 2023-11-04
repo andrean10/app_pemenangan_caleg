@@ -9,19 +9,6 @@ class PendukungKcbView extends GetView<PendukungKcbController> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget builderFAB() {
-    //   return Obx(
-    //     () => AnimatedOpacity(
-    //       duration: 300.milliseconds,
-    //       opacity: controller.isScrolling.valupe ? 0 : 1,
-    //       child: FloatingActionButton(
-    //         onPressed: () {},
-    //         child: const Icon(Icons.add_rounded),
-    //       ),
-    //     ),
-    //   );
-    // }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Data Pendukung'),

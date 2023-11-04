@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/data_pendukung_korlap_controller.dart';
-
-class DataPendukungKorlapView extends GetView<DataPendukungKorlapController> {
+class DataPendukungKorlapView extends StatelessWidget {
   const DataPendukungKorlapView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
