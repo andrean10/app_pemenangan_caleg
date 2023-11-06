@@ -10,8 +10,8 @@ import '../../../../data/models/users/users_model.dart';
 import '../../../../routes/app_pages.dart';
 
 class ProfileKorcabController extends GetxController {
-  late final InitController _initC;
-  late final ProfileServices _profileS;
+  late InitController _initC;
+  late ProfileServices _profileS;
 
   final usersModel = Rxn<UsersModel>();
 
