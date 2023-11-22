@@ -73,12 +73,18 @@ class LoginController extends GetxController {
         final id = loginModel.result?.data?.id;
         final token = loginModel.result?.token;
         final role = loginModel.result?.data?.namaRoles;
+        final provincesId = loginModel.result?.data?.provincesId;
+        final regenciesId = loginModel.result?.data?.regenciesId;
+        final districtsId = loginModel.result?.data?.districtsId;
 
         if (id != null && token != null) {
           final session = UserSession(
             id: id,
             token: token,
             role: role ?? '',
+            provincesId: provincesId ?? 0,
+            regenciesId: regenciesId ?? 0,
+            districtsId: districtsId ?? 0,
           );
 
           _initC.setSession(session).then((_) => moveToMain(role));

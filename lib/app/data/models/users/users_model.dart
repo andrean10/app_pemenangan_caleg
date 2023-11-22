@@ -8,6 +8,9 @@ class UsersModel {
   String? password;
   int? isAktif;
   int? isRegistps;
+  int? provincesId;
+  int? regenciesId;
+  int? districtsId;
   ProfileModel? profile;
   List<RoleModel>? roles;
 
@@ -17,13 +20,16 @@ class UsersModel {
     this.password,
     this.isAktif,
     this.isRegistps,
+    this.provincesId,
+    this.regenciesId,
+    this.districtsId,
     this.profile,
     this.roles,
   });
 
   @override
   String toString() {
-    return 'UsersModel(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, profile: $profile, roles: $roles)';
+    return 'UsersModel(id: $id, username: $username, password: $password, isAktif: $isAktif, isRegistps: $isRegistps, provincesId: $provincesId, regenciesId: $regenciesId, districtsId: $districtsId, profile: $profile, roles: $roles)';
   }
 
   factory UsersModel.fromJson(Map<String, dynamic> json) => UsersModel(
@@ -32,6 +38,9 @@ class UsersModel {
         password: json['password'] as String?,
         isAktif: json['is_aktif'] as int?,
         isRegistps: json['is_registps'] as int?,
+        provincesId: json['provinces_id'] as int?,
+        regenciesId: json['regencies_id'] as int?,
+        districtsId: json['districts_id'] as int?,
         profile: json['profile'] == null
             ? null
             : ProfileModel.fromJson(json['profile'] as Map<String, dynamic>),
@@ -46,6 +55,9 @@ class UsersModel {
         'password': password,
         'is_aktif': isAktif,
         'is_registps': isRegistps,
+        'provinces_id': provincesId,
+        'regencies_id': regenciesId,
+        'districts_id': districtsId,
         'profile': profile?.toJson(),
         'roles': roles?.map((e) => e.toJson()).toList(),
       };
@@ -56,6 +68,9 @@ class UsersModel {
     String? password,
     int? isAktif,
     int? isRegistps,
+    int? provincesId,
+    int? regenciesId,
+    int? districtsId,
     ProfileModel? profile,
     List<RoleModel>? roles,
   }) {
@@ -65,6 +80,9 @@ class UsersModel {
       password: password ?? this.password,
       isAktif: isAktif ?? this.isAktif,
       isRegistps: isRegistps ?? this.isRegistps,
+      provincesId: provincesId ?? this.provincesId,
+      regenciesId: regenciesId ?? this.regenciesId,
+      districtsId: districtsId ?? this.districtsId,
       profile: profile ?? this.profile,
       roles: roles ?? this.roles,
     );

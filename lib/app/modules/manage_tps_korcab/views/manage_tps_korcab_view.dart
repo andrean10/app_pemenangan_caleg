@@ -39,17 +39,92 @@ class ManageDataTpsKorcabView extends GetView<ManageDataTpsKorcabController> {
       );
     }
 
-    Widget builderProvince() {
+    // Widget builderProvince() {
+    //   return CustomTextField(
+    //     controller: controller.provinceC,
+    //     title: 'Provinsi',
+    //     hintTitle: 'Pilih item',
+    //     onTap: () => showCustomBottomSheet(
+    //       context: context,
+    //       pagingController: controller.pagingProvinceC,
+    //       title: 'Pilih Provinsi',
+    //       itemTap: (value) {
+    //         controller.setProvince(value);
+    //         Get.back();
+    //       },
+    //     ),
+    //     suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+    //     isReadOnly: true,
+    //     validator: (value) => controller.validateForm(
+    //       value: value,
+    //       titleField: 'Provinsi',
+    //     ),
+    //   );
+    // }
+
+    // Widget builderRegencies() {
+    //   return Obx(
+    //     () => CustomTextField(
+    //       controller: controller.regenciesC,
+    //       title: 'Kabupaten/Kota',
+    //       hintTitle: 'Pilih item',
+    //       isEnable: controller.selectedItemProvince.value != null,
+    //       onTap: () => showCustomBottomSheet(
+    //         context: context,
+    //         pagingController: controller.pagingRegenciesC,
+    //         title: 'Pilih Kabupaten',
+    //         itemTap: (value) {
+    //           controller.setRegencies(value);
+    //           Get.back();
+    //         },
+    //       ),
+    //       suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+    //       isReadOnly: true,
+    //       validator: (value) => controller.validateForm(
+    //         value: value,
+    //         titleField: 'Kabupaten',
+    //       ),
+    //     ),
+    //   );
+    // }
+
+    // Widget builderDistrict() {
+    //   return Obx(
+    //     () => CustomTextField(
+    //       controller: controller.districtsC,
+    //       title: 'Kecamatan',
+    //       hintTitle: 'Pilih item',
+    //       isEnable: controller.selectedItemRegencies.value != null,
+    //       onTap: () => showCustomBottomSheet(
+    //         context: context,
+    //         pagingController: controller.pagingDistrictC,
+    //         title: 'Pilih Kecamatan',
+    //         itemTap: (value) {
+    //           controller.setDistrict(value);
+    //           Get.back();
+    //         },
+    //       ),
+    //       suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+    //       isReadOnly: true,
+    //       validator: (value) => controller.validateForm(
+    //         value: value,
+    //         titleField: 'Kecamatan',
+    //       ),
+    //     ),
+    //   );
+    // }
+
+    Widget builderVillages() {
       return CustomTextField(
-        controller: controller.provinceC,
-        title: 'Provinsi',
+        controller: controller.villagesC,
+        title: 'Kelurahan',
         hintTitle: 'Pilih item',
         onTap: () => showCustomBottomSheet(
           context: context,
-          pagingController: controller.pagingProvinceC,
-          title: 'Pilih Provinsi',
+          pagingController: controller.pagingVillagesC,
+          title: 'Pilih Kelurahan',
           itemTap: (value) {
-            controller.setProvince(value);
+            controller.setVillages(value);
             Get.back();
           },
         ),
@@ -57,87 +132,32 @@ class ManageDataTpsKorcabView extends GetView<ManageDataTpsKorcabController> {
         isReadOnly: true,
         validator: (value) => controller.validateForm(
           value: value,
-          titleField: 'Provinsi',
+          titleField: 'Kelurahan',
         ),
       );
-    }
 
-    Widget builderRegencies() {
-      return Obx(
-        () => CustomTextField(
-          controller: controller.regenciesC,
-          title: 'Kabupaten/Kota',
-          hintTitle: 'Pilih item',
-          isEnable: controller.selectedItemProvince.value != null,
-          onTap: () => showCustomBottomSheet(
-            context: context,
-            pagingController: controller.pagingRegenciesC,
-            title: 'Pilih Kabupaten',
-            itemTap: (value) {
-              controller.setRegencies(value);
-              Get.back();
-            },
-          ),
-          suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
-          isReadOnly: true,
-          validator: (value) => controller.validateForm(
-            value: value,
-            titleField: 'Kabupaten',
-          ),
-        ),
-      );
-    }
-
-    Widget builderDistrict() {
-      return Obx(
-        () => CustomTextField(
-          controller: controller.districtsC,
-          title: 'Kecamatan',
-          hintTitle: 'Pilih item',
-          isEnable: controller.selectedItemRegencies.value != null,
-          onTap: () => showCustomBottomSheet(
-            context: context,
-            pagingController: controller.pagingDistrictC,
-            title: 'Pilih Kecamatan',
-            itemTap: (value) {
-              controller.setDistrict(value);
-              Get.back();
-            },
-          ),
-          suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
-          isReadOnly: true,
-          validator: (value) => controller.validateForm(
-            value: value,
-            titleField: 'Kecamatan',
-          ),
-        ),
-      );
-    }
-
-    Widget builderVillages() {
-      return Obx(
-        () => CustomTextField(
-          controller: controller.villagesC,
-          title: 'Kelurahan',
-          hintTitle: 'Pilih item',
-          isEnable: controller.selectedItemDistrict.value != null,
-          onTap: () => showCustomBottomSheet(
-            context: context,
-            pagingController: controller.pagingVillagesC,
-            title: 'Pilih Kelurahan',
-            itemTap: (value) {
-              controller.setVillages(value);
-              Get.back();
-            },
-          ),
-          suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
-          isReadOnly: true,
-          validator: (value) => controller.validateForm(
-            value: value,
-            titleField: 'Kelurahan',
-          ),
-        ),
-      );
+      // return Obx(
+      //   () => CustomTextField(
+      //     controller: controller.villagesC,
+      //     title: 'Kelurahan',
+      //     hintTitle: 'Pilih item',
+      //     onTap: () => showCustomBottomSheet(
+      //       context: context,
+      //       pagingController: controller.pagingVillagesC,
+      //       title: 'Pilih Kelurahan',
+      //       itemTap: (value) {
+      //         controller.setVillages(value);
+      //         Get.back();
+      //       },
+      //     ),
+      //     suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+      //     isReadOnly: true,
+      //     validator: (value) => controller.validateForm(
+      //       value: value,
+      //       titleField: 'Kelurahan',
+      //     ),
+      //   ),
+      // );
     }
 
     Widget builderTPSName() {
@@ -232,12 +252,12 @@ class ManageDataTpsKorcabView extends GetView<ManageDataTpsKorcabController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            builderProvince(),
-            const SizedBox(height: 16),
-            builderRegencies(),
-            const SizedBox(height: 16),
-            builderDistrict(),
-            const SizedBox(height: 16),
+            // builderProvince(),
+            // const SizedBox(height: 16),
+            // builderRegencies(),
+            // const SizedBox(height: 16),
+            // builderDistrict(),
+            // const SizedBox(height: 16),
             builderVillages(),
             const SizedBox(height: 16),
             builderTPSName(),

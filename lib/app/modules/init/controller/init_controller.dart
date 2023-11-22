@@ -26,12 +26,18 @@ class InitController extends GetxController {
     final id = _box.read('id') as int?;
     final token = _box.read('token') as String?;
     final role = _box.read('role') as String?;
+    final provincesId = _box.read('provincesId') as int?;
+    final regenciesId = _box.read('regenciesId') as int?;
+    final districtsId = _box.read('districtsId') as int?;
 
     if (id != null && token != null && role != null) {
       return UserSession(
         id: id,
         token: token,
         role: role,
+        provincesId: provincesId ?? 0,
+        regenciesId: regenciesId ?? 0,
+        districtsId: districtsId ?? 0,
       );
     }
 
@@ -42,6 +48,9 @@ class InitController extends GetxController {
     await _box.write('id', session.id);
     await _box.write('token', session.token);
     await _box.write('role', session.role);
+    await _box.write('provincesId', session.provincesId);
+    await _box.write('regenciesId', session.regenciesId);
+    await _box.write('districtsId', session.districtsId);
   }
 
   Future<void> deleteSession() async => await _box.erase();
