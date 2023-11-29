@@ -51,13 +51,13 @@ class DetailProfileKorcabController extends GetxController {
         logger.d(
             'debug: isProfileKorlap initialized = ${_profileKorlapC.initialized}');
 
-        if (_profileKorcabC.initialized) {
-          _profileKorcabC.fetchProfile();
-        }
+        // if (_profileKorcabC.initialized) {
+        //   _profileKorcabC.fetchProfile();
+        // }
 
-        if (_profileKorlapC.initialized) {
-          _profileKorlapC.fetchProfile();
-        }
+        // if (_profileKorlapC.initialized) {
+        //   _profileKorlapC.fetchProfile();
+        // }
       }
     } catch (e) {
       logger.e('Error: $e');

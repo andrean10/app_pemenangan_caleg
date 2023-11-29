@@ -210,9 +210,26 @@ class ManageProfileView extends GetView<ManageProfileController> {
     Widget childBuilderPhoto() {
       if (controller.image.value != null &&
           controller.selectedImage.value == null) {
-        return Image.network(
-          '${ConstantsEndpoint.imgProfile}${controller.image.value}',
-          fit: BoxFit.cover,
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: Image.network(
+                '${ConstantsEndpoint.imgProfile}${controller.image.value}',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  'assets/img/placeholder_no_photo.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Center(
+              child: Icon(
+                Icons.camera_alt_rounded,
+                size: 42,
+                color: theme.colorScheme.outlineVariant,
+              ),
+            )
+          ],
         );
       } else if (controller.selectedImage.value != null) {
         return Image.file(

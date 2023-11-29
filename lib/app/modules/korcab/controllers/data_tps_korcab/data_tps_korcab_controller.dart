@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-
 import 'dart:io';
-
 import 'package:app_pemenangan_caleg/app/data/models/korcab/tps/response/data_tps_korcab.dart';
 import 'package:app_pemenangan_caleg/app/data/models/tps/tps_pendukung/response/result_tps_pendukung_model.dart';
 import 'package:app_pemenangan_caleg/app/services/korcab/tps_korcab_services.dart';
@@ -17,12 +15,11 @@ import '../../../../routes/app_pages.dart';
 class DataTpsKorcabController extends GetxController {
   late final TpsKorcabServices _tpsKorcabS;
   final pagingC = PagingController<int, DataTpsKorcab>(firstPageKey: 1);
+  final scrollC = ScrollController();
 
   final logger = Logger();
 
   var isScrolling = false.obs;
-
-  final scrollC = ScrollController();
 
   @override
   void onInit() {

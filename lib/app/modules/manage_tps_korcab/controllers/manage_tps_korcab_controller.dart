@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app_pemenangan_caleg/app/data/models/region/data_region_model.dart';
 import 'package:app_pemenangan_caleg/app/modules/korcab/controllers/data_tps_korcab/data_tps_korcab_controller.dart';
 import 'package:app_pemenangan_caleg/app/services/korcab/tps_korcab_services.dart';
+import 'package:app_pemenangan_caleg/app/services/profile/profile_services.dart';
 import 'package:app_pemenangan_caleg/app/shared/shared_method.dart';
 import 'package:app_pemenangan_caleg/app/utils/constants_lottie.dart';
 import 'package:flutter/material.dart';
@@ -14,37 +15,41 @@ import 'package:lottie/lottie.dart';
 
 import '../../../data/models/korcab/tps/response/data_tps_korcab.dart';
 import '../../../data/models/region/province/region_model.dart';
+import '../../../data/models/users/response_users_model.dart';
+import '../../init/controller/init_controller.dart';
 
 class ManageDataTpsKorcabController extends GetxController {
-  late final TpsKorcabServices _tpsKorcabS;
+  // late final InitController _initC;
   late final DataTpsKorcabController _tpsKorcabC;
+  late final TpsKorcabServices _tpsKorcabS;
+  late final ProfileServices _profileS;
   late DataTpsKorcab? args;
 
-  final pagingProvinceC =
-      PagingController<int, DataRegionModel>(firstPageKey: 1);
-  final pagingRegenciesC =
-      PagingController<int, DataRegionModel>(firstPageKey: 1);
-  final pagingDistrictC =
-      PagingController<int, DataRegionModel>(firstPageKey: 1);
+  // final pagingProvinceC =
+  //     PagingController<int, DataRegionModel>(firstPageKey: 1);
+  // final pagingRegenciesC =
+  //     PagingController<int, DataRegionModel>(firstPageKey: 1);
+  // final pagingDistrictC =
+  //     PagingController<int, DataRegionModel>(firstPageKey: 1);
   final pagingVillagesC =
       PagingController<int, DataRegionModel>(firstPageKey: 1);
 
-  final selectedItemProvince = Rxn<DataRegionModel>();
-  final selectedItemRegencies = Rxn<DataRegionModel>();
-  final selectedItemDistrict = Rxn<DataRegionModel>();
+  // final selectedItemProvince = Rxn<DataRegionModel>();
+  // final selectedItemRegencies = Rxn<DataRegionModel>();
+  // final selectedItemDistrict = Rxn<DataRegionModel>();
   final selectedItemVillages = Rxn<DataRegionModel>();
 
-  var currentLengthProvince = 0;
-  var currentLengthRegencies = 0;
-  var currentLengthDistrict = 0;
+  // var currentLengthProvince = 0;
+  // var currentLengthRegencies = 0;
+  // var currentLengthDistrict = 0;
   var currentLengthVillages = 0;
 
   var title = '';
 
   final formKey = GlobalKey<FormState>();
-  final provinceC = TextEditingController();
-  final regenciesC = TextEditingController();
-  final districtsC = TextEditingController();
+  // final provinceC = TextEditingController();
+  // final regenciesC = TextEditingController();
+  // final districtsC = TextEditingController();
   final villagesC = TextEditingController();
   final tpsNameC = TextEditingController();
   final tpsAddressC = TextEditingController();
@@ -52,11 +57,14 @@ class ManageDataTpsKorcabController extends GetxController {
   final tpsSupportC = TextEditingController();
   final tpsCoQuotaC = TextEditingController();
 
-  final List<DataRegionModel> currentDataProvince = [];
-  final List<DataRegionModel> currentDataRegencies = [];
-  final List<DataRegionModel> currentDataDistricts = [];
+  // final List<DataRegionModel> currentDataProvince = [];
+  // final List<DataRegionModel> currentDataRegencies = [];
+  // final List<DataRegionModel> currentDataDistricts = [];
   final List<DataRegionModel> currentDataVillages = [];
 
+  var provincesId = 0;
+  var regenciesId = 0;
+  var districtsId = 0;
   final tpsName = ''.obs;
   final tpsSupport = 0.obs;
   final tpsMinCo = 0.obs;
@@ -80,6 +88,10 @@ class ManageDataTpsKorcabController extends GetxController {
   }
 
   void _init() {
+    // if (Get.isRegistered<InitController>()) {
+    //   _initC = Get.find<InitController>();
+    // }
+
     if (Get.isRegistered<DataTpsKorcabController>()) {
       _tpsKorcabC = Get.find<DataTpsKorcabController>();
     }
@@ -89,10 +101,11 @@ class ManageDataTpsKorcabController extends GetxController {
     title = (args != null) ? 'Edit Form TPS' : 'Tambah Form TPS';
 
     _tpsKorcabS = TpsKorcabServices();
-    pagingProvinceC.addPageRequestListener((pageKey) => fetchProvince(pageKey));
-    pagingRegenciesC
-        .addPageRequestListener((pageKey) => fetchRegencies(page: pageKey));
-    pagingDistrictC.addPageRequestListener((pageKey) => fetchDistrict(pageKey));
+    _profileS = ProfileServices();
+    // pagingProvinceC.addPageRequestListener((pageKey) => fetchProvince(pageKey));
+    // pagingRegenciesC
+    //     .addPageRequestListener((pageKey) => fetchRegencies(page: pageKey));
+    // pagingDistrictC.addPageRequestListener((pageKey) => fetchDistrict(pageKey));
     pagingVillagesC.addPageRequestListener((pageKey) => fetchVillages(pageKey));
 
     tpsNameC.addListener(setNameTPS);
@@ -103,6 +116,8 @@ class ManageDataTpsKorcabController extends GetxController {
   }
 
   Future<void> _initData() async {
+    await fetchProfile();
+
     if (args != null) {
       tpsNameC.text = args!.namaTps.toString();
       tpsSupportC.text = args!.pendukungTps.toString();
@@ -119,10 +134,10 @@ class ManageDataTpsKorcabController extends GetxController {
       );
 
       try {
-        await fetchAllProvince(args!);
-        await fetchAllRegencies(args!);
-        await fetchAllDistricts(args!);
-        await fetchAllVillages(args!);
+        // await fetchAllProvince(args!);
+        // await fetchAllRegencies(args!);
+        // await fetchAllDistricts(args!);
+        await fetchAllVillages(districtsId, args!.villagesId!);
       } on dio.DioException catch (e) {
         logger.e('Error: ${e.message}');
       } finally {
@@ -150,32 +165,32 @@ class ManageDataTpsKorcabController extends GetxController {
     return null;
   }
 
-  void setProvince(DataRegionModel data) {
-    if (data != selectedItemProvince.value) {
-      clearFieldRegion(isProvince: true);
-    }
+  // void setProvince(DataRegionModel data) {
+  //   if (data != selectedItemProvince.value) {
+  //     clearFieldRegion(isProvince: true);
+  //   }
 
-    provinceC.text = capitalizeEachWords(data.value!);
-    selectedItemProvince.value = data;
-  }
+  //   provinceC.text = capitalizeEachWords(data.value!);
+  //   selectedItemProvince.value = data;
+  // }
 
-  void setRegencies(DataRegionModel data) {
-    if (data != selectedItemRegencies.value) {
-      clearFieldRegion(isRegencies: true);
-    }
+  // void setRegencies(DataRegionModel data) {
+  //   if (data != selectedItemRegencies.value) {
+  //     clearFieldRegion(isRegencies: true);
+  //   }
 
-    regenciesC.text = capitalizeEachWords(data.value!);
-    selectedItemRegencies.value = data;
-  }
+  //   regenciesC.text = capitalizeEachWords(data.value!);
+  //   selectedItemRegencies.value = data;
+  // }
 
-  void setDistrict(DataRegionModel data) {
-    if (data != selectedItemDistrict.value) {
-      clearFieldRegion(isDistrict: true);
-    }
+  // void setDistrict(DataRegionModel data) {
+  //   if (data != selectedItemDistrict.value) {
+  //     clearFieldRegion(isDistrict: true);
+  //   }
 
-    districtsC.text = capitalizeEachWords(data.value!);
-    selectedItemDistrict.value = data;
-  }
+  //   districtsC.text = capitalizeEachWords(data.value!);
+  //   selectedItemDistrict.value = data;
+  // }
 
   void setVillages(DataRegionModel data) {
     villagesC.text = capitalizeEachWords(data.value!);
@@ -188,28 +203,28 @@ class ManageDataTpsKorcabController extends GetxController {
     bool isDistrict = false,
   }) {
     if (isProvince) {
-      regenciesC.clear();
-      districtsC.clear();
+      // regenciesC.clear();
+      // districtsC.clear();
       villagesC.clear();
 
-      currentLengthRegencies = 0;
-      currentLengthDistrict = 0;
+      // currentLengthRegencies = 0;
+      // currentLengthDistrict = 0;
       currentLengthVillages = 0;
 
-      pagingRegenciesC.refresh();
-      pagingDistrictC.refresh();
+      // pagingRegenciesC.refresh();
+      // pagingDistrictC.refresh();
       pagingVillagesC.refresh();
       return;
     }
 
     if (isRegencies) {
-      districtsC.clear();
+      // districtsC.clear();
       villagesC.clear();
 
-      currentLengthDistrict = 0;
+      // currentLengthDistrict = 0;
       currentLengthVillages = 0;
 
-      pagingDistrictC.refresh();
+      // pagingDistrictC.refresh();
       pagingVillagesC.refresh();
       return;
     }
@@ -244,92 +259,110 @@ class ManageDataTpsKorcabController extends GetxController {
     }
   }
 
-  Future<void> fetchAllProvince(DataTpsKorcab args, {int page = 1}) async {
+  Future<void> fetchProfile() async {
     try {
-      final response = await _tpsKorcabS.fetchProvince(page: page);
-
+      final response = await _profileS.fetchProfile();
       if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        if (region.result != null) {
-          final result = region.result;
-          currentDataProvince.addAll(result!.results!.map((e) => e));
-
-          final dataFilter = currentDataProvince
-              .firstWhere((element) => element.id == args.provincesId);
-
-          if (dataFilter.value != null) {
-            setProvince(dataFilter);
-          } else {
-            fetchAllProvince(args, page: page + 1);
-          }
-        }
+        final data = ResponseUsersModel.fromJson(response.data);
+        provincesId = data.result?.provincesId ?? 0;
+        regenciesId = data.result?.regenciesId ?? 0;
+        districtsId = data.result?.districtsId ?? 0;
       }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
+    } catch (e) {
+      logger.e('Error: $e');
     }
   }
 
-  Future<void> fetchAllRegencies(DataTpsKorcab args, {int page = 1}) async {
-    try {
-      final response = await _tpsKorcabS.fetchRegencies(
-        page: page,
-        provinceId: args.provincesId!,
-      );
+  // Future<void> fetchAllProvince(DataTpsKorcab args, {int page = 1}) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchProvince(page: page);
 
-      if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        if (region.result != null) {
-          final result = region.result;
-          currentDataRegencies.addAll(result!.results!.map((e) => e));
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       if (region.result != null) {
+  //         final result = region.result;
+  //         currentDataProvince.addAll(result!.results!.map((e) => e));
 
-          final dataFilter = currentDataRegencies
-              .firstWhere((element) => element.id == args.regenciesId);
+  //         final dataFilter = currentDataProvince
+  //             .firstWhere((element) => element.id == args.provincesId);
 
-          if (dataFilter.value != null) {
-            setRegencies(dataFilter);
-          } else {
-            fetchAllRegencies(args, page: page + 1);
-          }
-        }
-      }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
-    }
-  }
+  //         if (dataFilter.value != null) {
+  //           setProvince(dataFilter);
+  //         } else {
+  //           fetchAllProvince(args, page: page + 1);
+  //         }
+  //       }
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //   }
+  // }
 
-  Future<void> fetchAllDistricts(DataTpsKorcab args, {int page = 1}) async {
-    try {
-      final response = await _tpsKorcabS.fetchDistrict(
-        page: page,
-        regenciesId: args.regenciesId!,
-      );
+  // Future<void> fetchAllRegencies(DataTpsKorcab args, {int page = 1}) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchRegencies(
+  //       page: page,
+  //       provinceId: args.provincesId!,
+  //     );
 
-      if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        if (region.result != null) {
-          final result = region.result;
-          currentDataDistricts.addAll(result!.results!.map((e) => e));
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       if (region.result != null) {
+  //         final result = region.result;
+  //         currentDataRegencies.addAll(result!.results!.map((e) => e));
 
-          final dataFilter = currentDataDistricts
-              .firstWhere((element) => element.id == args.districtsId);
+  //         final dataFilter = currentDataRegencies
+  //             .firstWhere((element) => element.id == args.regenciesId);
 
-          if (dataFilter.value != null) {
-            setDistrict(dataFilter);
-          } else {
-            fetchAllDistricts(args, page: page + 1);
-          }
-        }
-      }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
-    }
-  }
+  //         if (dataFilter.value != null) {
+  //           setRegencies(dataFilter);
+  //         } else {
+  //           fetchAllRegencies(args, page: page + 1);
+  //         }
+  //       }
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //   }
+  // }
 
-  Future<void> fetchAllVillages(DataTpsKorcab args, {int page = 1}) async {
+  // Future<void> fetchAllDistricts(DataTpsKorcab args, {int page = 1}) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchDistrict(
+  //       page: page,
+  //       regenciesId: args.regenciesId!,
+  //     );
+
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       if (region.result != null) {
+  //         final result = region.result;
+  //         currentDataDistricts.addAll(result!.results!.map((e) => e));
+
+  //         final dataFilter = currentDataDistricts
+  //             .firstWhere((element) => element.id == args.districtsId);
+
+  //         if (dataFilter.value != null) {
+  //           setDistrict(dataFilter);
+  //         } else {
+  //           fetchAllDistricts(args, page: page + 1);
+  //         }
+  //       }
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //   }
+  // }
+
+  Future<void> fetchAllVillages(
+    int districtsId,
+    int villagesId, {
+    int page = 1,
+  }) async {
     try {
       final response = await _tpsKorcabS.fetchVillages(
         page: page,
-        distrcitId: args.districtsId!,
+        distrcitId: districtsId,
       );
 
       if (response.statusCode == HttpStatus.ok) {
@@ -339,12 +372,16 @@ class ManageDataTpsKorcabController extends GetxController {
           currentDataVillages.addAll(result!.results!.map((e) => e));
 
           final dataFilter = currentDataVillages
-              .firstWhere((element) => element.id == args.villagesId);
+              .firstWhere((element) => element.id == villagesId);
 
           if (dataFilter.value != null) {
             setVillages(dataFilter);
           } else {
-            fetchAllVillages(args, page: page + 1);
+            fetchAllVillages(
+              districtsId,
+              villagesId,
+              page: page + 1,
+            );
           }
         }
       }
@@ -353,87 +390,87 @@ class ManageDataTpsKorcabController extends GetxController {
     }
   }
 
-  void fetchProvince(int page) async {
-    try {
-      final response = await _tpsKorcabS.fetchProvince(page: page);
-      if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        final result = region.result;
-        currentLengthProvince += result!.results!.length;
-        final isLastPage = currentLengthProvince == result.countFiltered!;
+  // void fetchProvince(int page) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchProvince(page: page);
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       final result = region.result;
+  //       currentLengthProvince += result!.results!.length;
+  //       final isLastPage = currentLengthProvince == result.countFiltered!;
 
-        if (isLastPage) {
-          pagingProvinceC.appendLastPage(result.results!);
-        } else {
-          pagingProvinceC.appendPage(result.results!, page + 1);
-        }
-      } else {
-        pagingProvinceC.error = response.statusMessage;
-      }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
-      pagingProvinceC.error = e;
-    }
-  }
+  //       if (isLastPage) {
+  //         pagingProvinceC.appendLastPage(result.results!);
+  //       } else {
+  //         pagingProvinceC.appendPage(result.results!, page + 1);
+  //       }
+  //     } else {
+  //       pagingProvinceC.error = response.statusMessage;
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //     pagingProvinceC.error = e;
+  //   }
+  // }
 
-  void fetchRegencies({required int page}) async {
-    try {
-      final response = await _tpsKorcabS.fetchRegencies(
-        page: page,
-        provinceId: selectedItemProvince.value!.id!,
-      );
+  // void fetchRegencies({required int page}) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchRegencies(
+  //       page: page,
+  //       provinceId: selectedItemProvince.value!.id!,
+  //     );
 
-      if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        final result = region.result;
-        currentLengthRegencies += result!.results!.length;
-        final isLastPage = currentLengthRegencies == result.countFiltered!;
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       final result = region.result;
+  //       currentLengthRegencies += result!.results!.length;
+  //       final isLastPage = currentLengthRegencies == result.countFiltered!;
 
-        if (isLastPage) {
-          pagingRegenciesC.appendLastPage(result.results!);
-        } else {
-          pagingRegenciesC.appendPage(result.results!, page + 1);
-        }
-      } else {
-        pagingRegenciesC.error = response.statusMessage;
-      }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
-      pagingRegenciesC.error = e;
-    }
-  }
+  //       if (isLastPage) {
+  //         pagingRegenciesC.appendLastPage(result.results!);
+  //       } else {
+  //         pagingRegenciesC.appendPage(result.results!, page + 1);
+  //       }
+  //     } else {
+  //       pagingRegenciesC.error = response.statusMessage;
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //     pagingRegenciesC.error = e;
+  //   }
+  // }
 
-  void fetchDistrict(int page) async {
-    try {
-      final response = await _tpsKorcabS.fetchDistrict(
-        page: page,
-        regenciesId: selectedItemRegencies.value!.id!,
-      );
-      if (response.statusCode == HttpStatus.ok) {
-        final region = RegionModel.fromJson(response.data);
-        final result = region.result;
-        currentLengthDistrict += result!.results!.length;
-        final isLastPage = currentLengthDistrict == result.countFiltered!;
+  // void fetchDistrict(int page) async {
+  //   try {
+  //     final response = await _tpsKorcabS.fetchDistrict(
+  //       page: page,
+  //       regenciesId: selectedItemRegencies.value!.id!,
+  //     );
+  //     if (response.statusCode == HttpStatus.ok) {
+  //       final region = RegionModel.fromJson(response.data);
+  //       final result = region.result;
+  //       currentLengthDistrict += result!.results!.length;
+  //       final isLastPage = currentLengthDistrict == result.countFiltered!;
 
-        if (isLastPage) {
-          pagingDistrictC.appendLastPage(result.results!);
-        } else {
-          pagingDistrictC.appendPage(result.results!, page + 1);
-        }
-      } else {
-        pagingDistrictC.error = response.statusMessage;
-      }
-    } on dio.DioException catch (e) {
-      logger.e('Error: ${e.message}');
-      pagingDistrictC.error = e;
-    }
-  }
+  //       if (isLastPage) {
+  //         pagingDistrictC.appendLastPage(result.results!);
+  //       } else {
+  //         pagingDistrictC.appendPage(result.results!, page + 1);
+  //       }
+  //     } else {
+  //       pagingDistrictC.error = response.statusMessage;
+  //     }
+  //   } on dio.DioException catch (e) {
+  //     logger.e('Error: ${e.message}');
+  //     pagingDistrictC.error = e;
+  //   }
+  // }
 
   void fetchVillages(int page) async {
     try {
       final response = await _tpsKorcabS.fetchVillages(
         page: page,
-        distrcitId: selectedItemDistrict.value!.id!,
+        distrcitId: districtsId,
       );
       if (response.statusCode == HttpStatus.ok) {
         final region = RegionModel.fromJson(response.data);
@@ -457,9 +494,9 @@ class ManageDataTpsKorcabController extends GetxController {
 
   Future<void> addTPS() async {
     final model = DataTpsKorcab(
-      provincesId: selectedItemProvince.value?.id,
-      regenciesId: selectedItemRegencies.value?.id,
-      districtsId: selectedItemDistrict.value?.id,
+      provincesId: provincesId,
+      regenciesId: regenciesId,
+      districtsId: districtsId,
       villagesId: selectedItemVillages.value?.id,
       namaTps: tpsName.value,
       alamatTps: tpsAddress.value,
@@ -492,9 +529,9 @@ class ManageDataTpsKorcabController extends GetxController {
 
   Future<void> updateTps() async {
     final model = DataTpsKorcab(
-      provincesId: selectedItemProvince.value?.id,
-      regenciesId: selectedItemRegencies.value?.id,
-      districtsId: selectedItemDistrict.value?.id,
+      // provincesId: selectedItemProvince.value?.id,
+      // regenciesId: selectedItemRegencies.value?.id,
+      // districtsId: selectedItemDistrict.value?.id,
       villagesId: selectedItemVillages.value?.id,
       namaTps: tpsName.value,
       alamatTps: tpsAddress.value,
