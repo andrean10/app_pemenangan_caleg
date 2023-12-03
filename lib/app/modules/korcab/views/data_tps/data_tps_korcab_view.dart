@@ -10,6 +10,7 @@ import '../../controllers/data_tps_korcab/data_tps_korcab_controller.dart';
 
 class DataTpsKorcabView extends GetView<DataTpsKorcabController> {
   const DataTpsKorcabView({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

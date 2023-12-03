@@ -116,7 +116,7 @@ class SuaraTpsKcbView extends GetView<SuaraTpsKcbController> {
                 borderRadius: BorderRadius.circular(16),
                 minHeight: 12,
               ),
-              Text('${result.presentasePemenangan} %'),
+              Text('${result.presentasePemenangan?.toStringAsFixed(2)}%'),
               const SizedBox(height: 8),
               builderItemHeader(
                 icons: Icons.campaign_rounded,

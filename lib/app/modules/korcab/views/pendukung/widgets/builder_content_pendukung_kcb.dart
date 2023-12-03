@@ -167,61 +167,16 @@ class BuilderContentPendukungKcb extends GetView<PendukungKcbController> {
               InfiniteScroll.builderNoItemsFound(),
           animateTransitions: true,
           itemBuilder: (context, item, index) {
-            return Dismissible(
-              key: Key(item.id.toString()),
-              background: Container(
-                color: Colors.green,
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 21),
-                child: const Icon(
-                  Icons.edit_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              secondaryBackground: Container(
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 21),
-                child: const Icon(
-                  Icons.delete_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              confirmDismiss: (direction) {
-                // if (direction == DismissDirection.endToStart) {
-                //   Get.defaultDialog(
-                //     title: 'Hapus Pendukung',
-                //     middleText: 'Apakah anda yakin ingin menghapus pendukung?',
-                //     textConfirm: 'Ya',
-                //     textCancel: 'Tidak',
-                //     onConfirm: () => controller.deletePendukung(item.id!),
-                //   );
-                // } else {
-                //   showCustomFullDialog(
-                //     context: context,
-                //     title: 'Pilih Pengganti Pendukung',
-                //     id: item.id!,
-                //   );
-                // }
-                return Future.value(false);
-              },
-              child: GestureDetector(
-                // onTap: () => controller.moveToDetail(item),
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: size.height * 0.2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      builderImage(item),
-                      const SizedBox(width: 21),
-                      builderInfo(item),
-                    ],
-                  ),
-                ),
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: size.height * 0.2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  builderImage(item),
+                  const SizedBox(width: 21),
+                  builderInfo(item),
+                ],
               ),
             );
           },

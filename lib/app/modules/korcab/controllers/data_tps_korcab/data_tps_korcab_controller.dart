@@ -53,12 +53,19 @@ class DataTpsKorcabController extends GetxController {
         final data = TpsKorcabModel.fromJson(response.data);
         final isLastPage = page == data.result!.lastPage;
 
-        final newData = data.result!.data!.map((e) {
-          fetchPendukung(e.id!).then(
-            (value) => e.totalPendukung = value,
-          );
-          return e;
-        }).toList();
+        // final newData = data.result!.data!.map((e) async {
+        //   await fetchPendukung(e.id!).then(
+        //     (value) => e.totalPendukung = value,
+        //   );
+        //   return e;
+        // }).toList();
+
+        final newData = <DataTpsKorcab>[];
+
+        for (var data in data.result!.data!) {
+          data.totalPendukung = await fetchPendukung(data.id!);
+          newData.add(data);
+        }
 
         if (isLastPage) {
           pagingC.appendLastPage(newData);
