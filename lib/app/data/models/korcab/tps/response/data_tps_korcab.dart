@@ -39,7 +39,7 @@ class DataTpsKorcab {
 
   @override
   String toString() {
-    return 'DataTpsKorcab(id: $id, provincesId: $provincesId, regenciesId: $regenciesId, districtsId: $districtsId, villagesId: $villagesId, namaTps: $namaTps, alamatTps: $alamatTps, totallkTps: $totallkTps, totalprTps: $totalprTps, totalsemuaTps: $totalsemuaTps, totalcoTps: $totalcoTps, minimalTps: $minimalTps, kuotaTps: $kuotaTps, pendukungTps: $pendukungTps, villages: $villages)';
+    return 'DataTpsKorcab(id: $id, provincesId: $provincesId, regenciesId: $regenciesId, districtsId: $districtsId, villagesId: $villagesId, namaTps: $namaTps, alamatTps: $alamatTps, totallkTps: $totallkTps, totalprTps: $totalprTps, totalsemuaTps: $totalsemuaTps, totalcoTps: $totalcoTps, minimalTps: $minimalTps, kuotaTps: $kuotaTps, pendukungTps: $pendukungTps, villages: $villages, totalPendukung: $totalPendukung)';
   }
 
   factory DataTpsKorcab.fromJson(Map<String, dynamic> data) => DataTpsKorcab(

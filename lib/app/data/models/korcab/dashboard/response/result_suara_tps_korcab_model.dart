@@ -8,7 +8,7 @@ class ResultSuaraTpsKorcabModel {
   int? targetPemenangan;
   double? presentasePemenangan;
   String? totalDukunganLk;
-  String? totalDukunganPr;
+  int? totalDukunganPr;
 
   ResultSuaraTpsKorcabModel({
     this.provinsi,
@@ -40,7 +40,7 @@ class ResultSuaraTpsKorcabModel {
         presentasePemenangan:
             (json['presentasePemenangan'] as num?)?.toDouble(),
         totalDukunganLk: json['totalDukunganLk'] as String?,
-        totalDukunganPr: json['totalDukunganPr'] as String?,
+        totalDukunganPr: json['totalDukunganPr'] as int?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,7 +66,7 @@ class ResultSuaraTpsKorcabModel {
     int? targetPemenangan,
     double? presentasePemenangan,
     String? totalDukunganLk,
-    String? totalDukunganPr,
+    int? totalDukunganPr,
   }) {
     return ResultSuaraTpsKorcabModel(
       provinsi: provinsi ?? this.provinsi,

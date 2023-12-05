@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../data/models/korlap/dashboard/response/result_dashboard_suara_model.dart';
 import '../../../widgets/buttons/custom_filled_button.dart';
 import '../../../widgets/card/cards.dart';
 import '../../../widgets/infinite_scroll/infinite_scroll.dart';
@@ -28,7 +27,7 @@ List<PieSeries<SuaraTPS, String>> _getDefaultPieSeries(
       explodeOffset: '10%',
       dataSource: <SuaraTPS>[
         SuaraTPS('Laki-laki', int.parse(result?.totalDukunganLk ?? '0')),
-        SuaraTPS('Perempuan', int.parse(result?.totalDukunganPr ?? '0')),
+        SuaraTPS('Perempuan', result?.totalDukunganPr ?? 0),
       ],
       xValueMapper: (SuaraTPS data, _) => data.gender,
       yValueMapper: (SuaraTPS data, _) => data.jumlah,
@@ -117,7 +116,7 @@ class SuaraTpsKcbView extends GetView<SuaraTpsKcbController> {
                 borderRadius: BorderRadius.circular(16),
                 minHeight: 12,
               ),
-              Text('${result.presentasePemenangan} %'),
+              Text('${result.presentasePemenangan?.toStringAsFixed(2)}%'),
               const SizedBox(height: 8),
               builderItemHeader(
                 icons: Icons.campaign_rounded,
